@@ -25,12 +25,12 @@
 
     /* Обертка всего контента */
     .wrapper {
-  width: 100%;
-  max-width: 864px; /* было 480px */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+      width: 100%;
+      max-width: 864px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
     /* Вкладки сверху */
     .tabs {
@@ -107,6 +107,9 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px 15px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 10px;
     }
 
     .track {
@@ -119,7 +122,7 @@
       animation: fadeInUp 0.6s forwards;
     }
 
-    /* Анимация с задержкой для каждого трека */
+    /* Анимация с задержкой для первых 10 треков */
     .track:nth-child(1) { animation-delay: 0.05s; }
     .track:nth-child(2) { animation-delay: 0.1s; }
     .track:nth-child(3) { animation-delay: 0.15s; }
@@ -272,96 +275,8 @@
       <section id="home" class="tab-content active">
         <h1>Музыка Апфс — Кишлак</h1>
 
-        <div class="tracks-grid">
-          <div class="track">
-            <h3>Трек 1 — Название первого трека</h3>
-            <audio controls>
-              <source src="music/track1.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track1.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 2 — Название второго трека</h3>
-            <audio controls>
-              <source src="music/track2.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track2.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 3 — Название третьего трека</h3>
-            <audio controls>
-              <source src="music/track3.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track3.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 4 — Название четвертого трека</h3>
-            <audio controls>
-              <source src="music/track4.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track4.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 5 — Название пятого трека</h3>
-            <audio controls>
-              <source src="music/track5.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track5.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 6 — Название шестого трека</h3>
-            <audio controls>
-              <source src="music/track6.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track6.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 7 — Название седьмого трека</h3>
-            <audio controls>
-              <source src="music/track7.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track7.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 8 — Название восьмого трека</h3>
-            <audio controls>
-              <source src="music/track8.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track8.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 9 — Название девятого трека</h3>
-            <audio controls>
-              <source src="music/track9.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track9.mp3" download>Скачать</a>
-          </div>
-
-          <div class="track">
-            <h3>Трек 10 — Название десятого трека</h3>
-            <audio controls>
-              <source src="music/track10.mp3" type="audio/mpeg" />
-              Ваш браузер не поддерживает элемент audio.
-            </audio>
-            <a class="download" href="music/track10.mp3" download>Скачать</a>
-          </div>
+        <div class="tracks-grid" id="tracksGrid">
+          <!-- Треки будут сгенерированы здесь -->
         </div>
       </section>
 
@@ -394,53 +309,156 @@
          <p><a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener" style="color:#ff4db8;">Моя Trade Ссылка</a></p>
       </section>
 
-      <footer>
-        © 2025 Фанат Апфс — Все треки собраны с любовью
-        <footer>
-          Создал сайт: VTLSEV:)
-        </footer>
-      </footer>
     </div>
   </div>
 
-  <div class="vertical-text vtlsv">АПФС</div>
-  <div class="vertical-text kishlak">КИШЛАК</div>
+  <footer>
+        © 2025 Фанат Апфс — Все треки собраны с любовью
+        <footer>
+          Создал сайт: VTLSEV:)
+
+  <div class="vertical-text kishlak">VTLSEV</div>
+  <div class="vertical-text vtlsv">Кишлак</div>
 
   <script>
-    // Скрипт переключения вкладок
+    // Переключение вкладок
     const tabs = document.querySelectorAll('.tab');
-    const contents = document.querySelectorAll('.tab-content');
+    const tabContents = document.querySelectorAll('.tab-content');
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('active'));
-        contents.forEach(c => c.classList.remove('active'));
         tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      });
-    });
 
-    // Управление аудио: выключать другие при запуске и синхронизировать громкость
-    const audios = document.querySelectorAll('audio');
-
-    audios.forEach(audio => {
-      audio.addEventListener('play', () => {
-        audios.forEach(otherAudio => {
-          if (otherAudio !== audio) {
-            otherAudio.pause();
-          }
-        });
-      });
-
-      audio.addEventListener('volumechange', () => {
-        const newVolume = audio.volume;
-        audios.forEach(otherAudio => {
-          if (otherAudio !== audio) {
-            otherAudio.volume = newVolume;
-          }
+        const target = tab.dataset.tab;
+        tabContents.forEach(content => {
+          content.classList.toggle('active', content.id === target);
         });
       });
     });
-  </script>
+
+    // Генерация 100 треков динамически
+    const tracksGrid = document.getElementById('tracksGrid');
+
+const trackTitles = {
+  1: "Название трека 1",
+  2: "Название трека 2",
+  3: "Название трека 3",
+  4: "Название трека 4",
+  5: "Название трека 5",
+  6: "Название трека 6",
+  7: "Название трека 7",
+  8: "Название трека 8",
+  9: "Название трека 9",
+  10: "Название трека 10",
+  11: "Название трека 11",
+  12: "Название трека 12",
+  13: "Название трека 13",
+  14: "Название трека 14",
+  15: "Название трека 15",
+  16: "Название трека 16",
+  17: "Название трека 17",
+  18: "Название трека 18",
+  19: "Название трека 19",
+  20: "Название трека 20",
+  21: "Название трека 21",
+  22: "Название трека 22",
+  23: "Название трека 23",
+  24: "Название трека 24",
+  25: "Название трека 25",
+  26: "Название трека 26",
+  27: "Название трека 27",
+  28: "Название трека 28",
+  29: "Название трека 29",
+  30: "Название трека 30",
+  31: "Название трека 31",
+  32: "Название трека 32",
+  33: "Название трека 33",
+  34: "Название трека 34",
+  35: "Название трека 35",
+  36: "Название трека 36",
+  37: "Название трека 37",
+  38: "Название трека 38",
+  39: "Название трека 39",
+  40: "Название трека 40",
+  41: "Название трека 41",
+  42: "Название трека 42",
+  43: "Название трека 43",
+  44: "Название трека 44",
+  45: "Название трека 45",
+  46: "Название трека 46",
+  47: "Название трека 47",
+  48: "Название трека 48",
+  49: "Название трека 49",
+  50: "Название трека 50",
+  51: "Название трека 51",
+  52: "Название трека 52",
+  53: "Название трека 53",
+  54: "Название трека 54",
+  55: "Название трека 55",
+  56: "Название трека 56",
+  57: "Название трека 57",
+  58: "Название трека 58",
+  59: "Название трека 59",
+  60: "Название трека 60",
+  61: "Название трека 61",
+  62: "Название трека 62",
+  63: "Название трека 63",
+  64: "Название трека 64",
+  65: "Название трека 65",
+  66: "Название трека 66",
+  67: "Название трека 67",
+  68: "Название трека 68",
+  69: "Название трека 69",
+  70: "Название трека 70",
+  71: "Название трека 71",
+  72: "Название трека 72",
+  73: "Название трека 73",
+  74: "Название трека 74",
+  75: "Название трека 75",
+  76: "Название трека 76",
+  77: "Название трека 77",
+  78: "Название трека 78",
+  79: "Название трека 79",
+  80: "Название трека 80",
+  81: "Название трека 81",
+  82: "Название трека 82",
+  83: "Название трека 83",
+  84: "Название трека 84",
+  85: "Название трека 85",
+  86: "Название трека 86",
+  87: "Название трека 87",
+  88: "Название трека 88",
+  89: "Название трека 89",
+  90: "Название трека 90",
+  91: "Название трека 91",
+  92: "Название трека 92",
+  93: "Название трека 93",
+  94: "Название трека 94",
+  95: "Название трека 95",
+  96: "Название трека 96",
+  97: "Название трека 97",
+  98: "Название трека 98",
+  99: "Название трека 99",
+  100: "Название трека 100"
+};
+
+for (let i = 1; i <= 100; i++) {
+    const title = trackTitles[i] || `Трек ${i}`;
+    const trackDiv = document.createElement('div');
+    trackDiv.classList.add('track');
+
+    trackDiv.innerHTML = `
+      <h3>АПФС/КИШЛАК — ${title}</h3>
+      <audio controls>
+        <source src="music/track${i}.mp3" type="audio/mpeg" />
+        Ваш браузер не поддерживает элемент audio.
+      </audio>
+      <a class="download" href="music/track${i}.mp3" download>Скачать</a>
+    `;
+
+    tracksGrid.appendChild(trackDiv);
+  }
+</script>
 </body>
 </html>
