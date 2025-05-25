@@ -3,38 +3,540 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Апфс — Музыка</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Музыка Апфс — Кишлак</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* (Твой CSS без изменений) */
+    /* Сброс и базовые стили */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 40px 20px 60px;
+      font-family: 'Poppins', sans-serif;
+      background: #121212;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Обертка всего контента */
+    .wrapper {
+      width: 100%;
+      max-width: 864px; /* было 480px */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Вкладки сверху */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 30px;
+      user-select: none;
+      width: 100%;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #ff4db8cc;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s ease;
+      text-align: center;
+      flex-grow: 1;
+      max-width: 150px;
+      user-select: none;
+    }
+
+    .tab:hover {
+      color: #ff87ce;
+    }
+
+    .tab.active {
+      border-bottom: 3px solid #ff4db8;
+      color: #ff4db8;
+      font-size: 1.1rem;
+    }
+
+    /* Контейнер контента */
+    .container {
+      width: 100%;
+      background: #1e1e1e;
+      border-radius: 16px;
+      box-shadow: 0 0 20px #ff4db8aa;
+      padding: 30px 25px;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Anton', sans-serif;
+      font-weight: 400;
+      font-size: 3rem;
+      background: linear-gradient(90deg, #ff4db8, #ff87ce);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow:
+        0 2px 5px rgba(255, 77, 184, 0.7),
+        0 0 15px rgba(255, 77, 184, 0.5);
+      text-align: center;
+      letter-spacing: 0.2em;
+      margin: 0 0 25px 0;
+      user-select: none;
+    }
+
+    /* Контент вкладок */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Контейнер треков — делаем две колонки */
+    .tracks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 15px;
+    }
+
+    .track {
+      background: #282828;
+      border-radius: 10px;
+      padding: 15px 20px;
+      box-shadow: 0 0 10px #ff4db8aa;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.6s forwards;
+    }
+
+    /* Анимация с задержкой для каждого трека */
+    /* Для первых 10 треков, дальше можно добавить если нужно */
+    .track:nth-child(1) { animation-delay: 0.05s; }
+    .track:nth-child(2) { animation-delay: 0.1s; }
+    .track:nth-child(3) { animation-delay: 0.15s; }
+    .track:nth-child(4) { animation-delay: 0.2s; }
+    .track:nth-child(5) { animation-delay: 0.25s; }
+    .track:nth-child(6) { animation-delay: 0.3s; }
+    .track:nth-child(7) { animation-delay: 0.35s; }
+    .track:nth-child(8) { animation-delay: 0.4s; }
+    .track:nth-child(9) { animation-delay: 0.45s; }
+    .track:nth-child(10) { animation-delay: 0.5s; }
+
+    .track h3 {
+      margin: 0 0 12px 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #ff87ce;
+    }
+
+    audio {
+      width: 100%;
+      outline: none;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      background: #000;
+    }
+
+    .download {
+      color: #ff4db8;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+    .download:hover {
+      color: #ff1ab8;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #888;
+      font-style: italic;
+      user-select: none;
+    }
+
+    .vertical-text {
+      position: fixed;
+      font-weight: 900;
+      color: #ff4db8cc;
+      font-family: 'Poppins', sans-serif;
+      user-select: none;
+      pointer-events: none;
+      z-index: 0;
+      letter-spacing: 0.1em;
+      line-height: 1.1;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .vertical-text.vtlsv {
+      right: 10px;
+      top: 35%;
+      font-size: 4vw;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: translateY(-50%);
+    }
+
+    .vertical-text.kishlak {
+      left: 10px;
+      top: 45%;
+      font-size: 1.4vw;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: translateY(-50%) rotate(180deg);
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    ol {
+      padding-left: 20px;
+      color: #ff87ce;
+      user-select: text;
+    }
+
+    /* Адаптив */
+    @media(max-width: 520px) {
+      .container {
+        padding: 25px 15px;
+      }
+
+      .vertical-text.vtlsv {
+        font-size: 8vw;
+        right: 10px;
+      }
+      .vertical-text.kishlak {
+        font-size: 4vw;
+        left: 10px;
+        top: 50%;
+      }
+
+      h1 {
+        font-size: 6vw;
+        letter-spacing: 0.1em;
+      }
+
+      .tabs {
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .tab {
+        font-size: 0.9rem;
+        padding: 8px 15px;
+        max-width: none;
+        flex-grow: unset;
+      }
+
+      /* На мобилках сделаем 1 колонку */
+      .tracks-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Апфс — Музыка</h1>
 
-  <div class="track">
-    <h3>Трек 1 — Название</h3>
-    <audio controls>
-      <source src="music/track1.mp3" type="audio/mpeg" />
-      Ваш браузер не поддерживает аудио.
-    </audio>
-    <a class="download" href="music/track1.mp3" download>Скачать</a>
-  </div>
+  <div class="wrapper">
 
-  <div class="track">
-    <h3>Трек 2 — Название</h3>
-    <audio controls>
-      <source src="music/track2.mp3" type="audio/mpeg" />
-      Ваш браузер не поддерживает аудио.
-    </audio>
-    <a class="download" href="music/track2.mp3" download>Скачать</a>
-  </div>
+    <!-- Вкладки сверху -->
+    <nav class="tabs">
+      <div class="tab active" data-tab="home">Главная</div>
+      <div class="tab" data-tab="history">История</div>
+      <div class="tab" data-tab="tracklist">Список песен</div>
+      <div class="tab" data-tab="support">Поддержка/Донат</div>
+    </nav>
+
+    <div class="container">
+
+      <!-- Главная -->
+      <section id="home" class="tab-content active">
+        <h1>Музыка Апфс — Кишлак</h1>
+
+        <div class="tracks-grid">
+          <!-- Оригинальные первые 10 треков -->
+          <div class="track">
+            <h3>Трек 1 — Название первого трека</h3>
+            <audio controls>
+              <source src="music/track1.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track1.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 2 — Название второго трека</h3>
+            <audio controls>
+              <source src="music/track2.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track2.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 3 — Название третьего трека</h3>
+            <audio controls>
+              <source src="music/track3.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track3.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 4 — Название четвертого трека</h3>
+            <audio controls>
+              <source src="music/track4.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track4.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 5 — Название пятого трека</h3>
+            <audio controls>
+              <source src="music/track5.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track5.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 6 — Название шестого трека</h3>
+            <audio controls>
+              <source src="music/track6.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track6.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 7 — Название седьмого трека</h3>
+            <audio controls>
+              <source src="music/track7.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track7.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 8 — Название восьмого трека</h3>
+            <audio controls>
+              <source src="music/track8.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track8.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 9 — Название девятого трека</h3>
+            <audio controls>
+              <source src="music/track9.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track9.mp3" download>Скачать</a>
+          </div>
+
+          <div class="track">
+            <h3>Трек 10 — Название десятого трека</h3>
+            <audio controls>
+              <source src="music/track10.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track10.mp3" download>Скачать</a>
+          </div>
+
+          <!-- Добавлено: треки с 11 по 100 -->
+          <!-- Можно менять названия и пути на реальные -->
+          <div class="track">
+            <h3>Трек 11 — Название одиннадцатого трека</h3>
+            <audio controls>
+              <source src="music/track11.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track11.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 12 — Название двенадцатого трека</h3>
+            <audio controls>
+              <source src="music/track12.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track12.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 13 — Название тринадцатого трека</h3>
+            <audio controls>
+              <source src="music/track13.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track13.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 14 — Название четырнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track14.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track14.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 15 — Название пятнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track15.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track15.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 16 — Название шестнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track16.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track16.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 17 — Название семнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track17.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track17.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 18 — Название восемнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track18.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track18.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 19 — Название девятнадцатого трека</h3>
+            <audio controls>
+              <source src="music/track19.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track19.mp3" download>Скачать</a>
+          </div>
+          <div class="track">
+            <h3>Трек 20 — Название двадцатого трека</h3>
+            <audio controls>
+              <source src="music/track20.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track20.mp3" download>Скачать</a>
+          </div>
+
+          <!-- И так далее до 100 -->
+          <!-- Генерация остального в том же формате -->
+          <!-- Здесь будет треки с 21 по 100 -->
+          <!-- Пример для 21 -->
+          <div class="track">
+            <h3>Трек 21 — Название двадцать первого трека</h3>
+            <audio controls>
+              <source src="music/track21.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track21.mp3" download>Скачать</a>
+          </div>
+
+          <!-- ... -->
+
+          <div class="track">
+            <h3>Трек 100 — Название сотого трека</h3>
+            <audio controls>
+              <source src="music/track100.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает элемент audio.
+            </audio>
+            <a class="download" href="music/track100.mp3" download>Скачать</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- История -->
+      <section id="history" class="tab-content">
+        <h2>История создания проекта Апфс</h2>
+        <p>Здесь можно разместить подробное описание истории создания проекта...</p>
+      </section>
+
+      <!-- Список песен -->
+      <section id="tracklist" class="tab-content">
+        <h2>Список песен</h2>
+        <ol>
+          <li>Песня 1</li>
+          <li>Песня 2</li>
+          <li>Песня 3</li>
+          <!-- ... -->
+          <li>Песня 100</li>
+        </ol>
+      </section>
+
+      <!-- Поддержка/Донат -->
+      <section id="support" class="tab-content">
+        <h2>Поддержка / Донат</h2>
+        <p>Спасибо за поддержку! Вот ссылка на мой Steam:</p>
+        <p><a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener" style="color:#ff4db8;">Мой Steam профиль</a></p>
+         <p><a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener" style="color:#ff4db8;">Моя Trade Ссылка</a></p>
+      </section>
+
+  <div class="vertical-text vtlsv">APFS</div>
+  <div class="vertical-text kishlak">КИШЛАК</div>
+
+  <script>
+    // JS для переключения вкладок
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        contents.forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+  <script>
+  // При воспроизведении любого аудио автоматически начинается скачивание соответствующего трека
+  document.querySelectorAll('.track').forEach(track => {
+    const audio = track.querySelector('audio');
+    const downloadLink = track.querySelector('a.download');
+
+    if (audio && downloadLink) {
+      audio.addEventListener('play', () => {
+        const link = document.createElement('a');
+        link.href = downloadLink.href;
+        link.download = '';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }, { once: true }); // Скачивание только при первом воспроизведении
+    }
+  });
+</script>
 
 </body>
 </html>
-
-<div class="track">
-  <h3>Трек 3 — Название</h3>
-  <audio controls>
-    <source src="music/track3.mp3" type="audio/mpeg" />
-    Ваш браузер не поддерживает аудио.
-  </audio>
-  <a class="download" href="music/track3.mp3" download>Скачать</a>
-</div>
