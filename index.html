@@ -502,36 +502,44 @@
 <!-- Поддержка/Донат -->
 <section id="support" class="tab-content">
   <h2>Поддержка / Донат</h2>
-  <p>Спасибо за поддержку! Вот ссылка на мой Steam:</p>
-  <p>
-    <a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener" style="color:#ff4db8;">
-      Мой Steam профиль
-    </a>
-  </p>
-  <p>
-    <a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener" style="color:#ff4db8;">
-      Моя Trade Ссылка
-    </a>
-  </p>
+  <p>Спасибо за поддержку! Вот ссылки:</p>
+  <p><a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener" style="color:#ff4db8;">Мой Steam профиль</a></p>
+  <p><a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener" style="color:#ff4db8;">Моя Trade Ссылка</a></p>
 
-  <h3 style="margin-top: 30px;">Обратная связь</h3>
-  <form action="https://formsubmit.co/apfs.kishlakk@gmail.com" method="POST">
-    <label for="reason" style="display:block;margin-bottom:5px;">Причина обращения:</label>
-    <select name="Причина" id="reason" required style="padding:8px;border-radius:5px;margin-bottom:15px;width:100%;max-width:400px;">
-      <option value="">-- Выберите причину --</option>
+  <h3 style="margin-top:30px;">Обратная связь</h3>
+  <form action="https://formsubmit.co/ТВОЯ_НОВАЯ_ПОЧТА@gmail.com" method="POST" onsubmit="return validateEmail()">
+    
+    <label for="email">Ваш Gmail:</label><br>
+    <input type="email" id="email" name="email" required placeholder="example@gmail.com"><br><br>
+
+    <label for="reason">Причина обращения:</label><br>
+    <select id="reason" name="reason" required>
+      <option value="" disabled selected>Выберите причину</option>
       <option value="Не работает функция">Не работает функция</option>
-      <option value="Есть предложение">Есть предложение</option>
+      <option value="Предложение">Предложение</option>
       <option value="Не хватает песни">Не хватает песни</option>
       <option value="Другое">Другое</option>
-    </select>
+    </select><br><br>
 
-    <label for="message" style="display:block;margin-bottom:5px;">Сообщение:</label>
-    <textarea name="Сообщение" id="message" rows="5" required placeholder="Опишите вашу проблему или идею..." style="width:100%;max-width:400px;padding:10px;border-radius:5px;margin-bottom:15px;"></textarea>
+    <label for="message">Сообщение:</label><br>
+    <textarea id="message" name="message" rows="5" required placeholder="Опишите проблему или идею..."></textarea><br><br>
 
-    <button type="submit" style="background-color:#ff4db8;color:#fff;border:none;padding:10px 20px;border-radius:5px;cursor:pointer;">
-      Отправить
-    </button>
+    <button type="submit">Отправить</button>
   </form>
+
+  <script>
+    function validateEmail() {
+      const emailInput = document.getElementById('email').value.trim();
+      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+      if (!gmailRegex.test(emailInput)) {
+        alert("Пожалуйста, введите действительный Gmail адрес (example@gmail.com).");
+        return false;
+      }
+
+      return true;
+    }
+  </script>
 </section>
 
 
