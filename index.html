@@ -498,50 +498,64 @@
 
 
 
+<!-- Поддержка и донат -->
+<section id="support" class="tab-content" style="color: #fff; padding: 30px;">
+  <h2 style="color: #ff4db8; font-size: 28px;">Поддержка / Донат</h2>
 
-<!-- Поддержка/Донат -->
-<section id="support" class="tab-content">
-  <h2>Поддержка / Донат</h2>
-  <p>Спасибо за поддержку! Вот ссылки:</p>
-  <p><a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener" style="color:#ff4db8;">Мой Steam профиль</a></p>
-  <p><a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener" style="color:#ff4db8;">Моя Trade Ссылка</a></p>
+  <!-- Блок формы поддержки -->
+  <div style="background: #1a1a1a; padding: 25px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 77, 184, 0.2); max-width: 600px; margin-bottom: 30px;">
+    <h3 style="margin-bottom: 20px; color: #ff4db8;">Связаться с поддержкой</h3>
+    <form action="https://formsubmit.co/apfs.kishlakk@gmail.com" method="POST" onsubmit="return validateSupportForm()">
 
-  <h3 style="margin-top:30px;">Обратная связь</h3>
-  <form action="https://formsubmit.co/ТВОЯ_НОВАЯ_ПОЧТА@gmail.com" method="POST" onsubmit="return validateEmail()">
-    
-    <label for="email">Ваш Gmail:</label><br>
-    <input type="email" id="email" name="email" required placeholder="example@gmail.com"><br><br>
+      <label for="email">Ваш Gmail:</label><br>
+      <input type="email" id="email" name="email" required placeholder="example@gmail.com"
+        style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;"><br>
 
-    <label for="reason">Причина обращения:</label><br>
-    <select id="reason" name="reason" required>
-      <option value="" disabled selected>Выберите причину</option>
-      <option value="Не работает функция">Не работает функция</option>
-      <option value="Предложение">Предложение</option>
-      <option value="Не хватает песни">Не хватает песни</option>
-      <option value="Другое">Другое</option>
-    </select><br><br>
+      <label for="reason">Причина обращения:</label><br>
+      <select id="reason" name="reason" required
+        style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;">
+        <option value="">-- Выберите причину --</option>
+        <option value="Функция не работает">Функция не работает</option>
+        <option value="Предложение">Предложение</option>
+        <option value="Не хватает песни">Не хватает песни</option>
+        <option value="Другое">Другое</option>
+      </select><br>
 
-    <label for="message">Сообщение:</label><br>
-    <textarea id="message" name="message" rows="5" required placeholder="Опишите проблему или идею..."></textarea><br><br>
+      <label for="message">Сообщение:</label><br>
+      <textarea id="message" name="message" rows="5" required placeholder="Введите ваше сообщение..."
+        style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;"></textarea><br>
 
-    <button type="submit">Отправить</button>
-  </form>
+      <!-- Защита от спама -->
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_template" value="box">
+
+      <button type="submit"
+        style="background:#ff4db8; border:none; padding:12px 25px; color:#fff; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s;">
+        Отправить
+      </button>
+    </form>
+  </div>
+
+  <!-- Блок с донатом и Steam -->
+  <div>
+    <p style="margin-bottom: 10px;">Спасибо за поддержку! Вот мои ссылки:</p>
+    <a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener"
+       style="color: #ff4db8; text-decoration: underline;">Мой Steam профиль</a><br>
+    <a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener"
+       style="color: #ff4db8; text-decoration: underline;">Моя Trade Ссылка</a>
+  </div>
 
   <script>
-    function validateEmail() {
-      const emailInput = document.getElementById('email').value.trim();
-      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
-
-      if (!gmailRegex.test(emailInput)) {
-        alert("Пожалуйста, введите действительный Gmail адрес (example@gmail.com).");
+    function validateSupportForm() {
+      const email = document.getElementById("email").value.trim();
+      if (!email.endsWith("@gmail.com")) {
+        alert("Введите действительный Gmail адрес.");
         return false;
       }
-
       return true;
     }
   </script>
 </section>
-
 
 
     </div>
