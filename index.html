@@ -261,29 +261,23 @@
 
   <div class="wrapper">
 
-    <!-- Вкладки сверху -->
     <nav class="tabs">
       <div class="tab active" data-tab="home">Главная</div>
       <div class="tab" data-tab="history">История</div>
       <div class="tab" data-tab="tracklist">Список песен</div>
       <div class="tab" data-tab="support">Поддержка/Донат</div>
-      <!-- sss -->
 
-      <!-- sss -->
     </nav>
 
     <div class="container">
 
-      <!-- Главная -->
       <section id="home" class="tab-content active">
         <h1>Музыка Апфс — Кишлак</h1>
 
         <div class="tracks-grid" id="tracksGrid">
-          <!-- Треки будут сгенерированы здесь -->
         </div>
       </section>
 
-      <!-- История -->
       <section id="history" class="tab-content">
         <h2>История жизни Кишлака</h2>
         <p>
@@ -329,7 +323,6 @@
         </p>
       </section>
 
-      <!-- Список песен -->
 <section id="tracklist" class="tab-content">
   <h2>Список песен</h2>
   <ol>
@@ -498,11 +491,9 @@
 
 
 
-<!-- Поддержка и донат -->
 <section id="support" class="tab-content" style="color: #fff; padding: 30px;">
   <h2 style="color: #ff4db8; font-size: 28px;">Поддержка / Донат</h2>
 
-  <!-- Блок формы поддержки -->
   <div style="background: #1a1a1a; padding: 25px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 77, 184, 0.2); max-width: 600px; margin-bottom: 30px;">
     <h3 style="margin-bottom: 20px; color: #ff4db8;">Связаться с поддержкой</h3>
     <form action="https://formsubmit.co/apfs.kishlakk@gmail.com" method="POST" onsubmit="return validateSupportForm()">
@@ -525,7 +516,6 @@
       <textarea id="message" name="message" rows="5" required placeholder="Введите ваше сообщение..."
         style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;"></textarea><br>
 
-      <!-- Защита от спама -->
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_template" value="box">
 
@@ -536,7 +526,6 @@
     </form>
   </div>
 
-  <!-- Блок с донатом и Steam -->
   <div>
     <p style="margin-bottom: 10px;">Спасибо за поддержку! Вот мои ссылки:</p>
     <a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener"
@@ -570,7 +559,6 @@
   <div class="vertical-text vtlsv">Кишлак</div>
 
   <script>
-    // Переключение вкладок
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
 
@@ -586,7 +574,6 @@
       });
     });
 
-    // Генерация 100 треков динамически
     const tracksGrid = document.getElementById('tracksGrid');
 
 const trackTitles = {
@@ -742,7 +729,7 @@ const trackTitles = {
   150: "Название трека 150",
 };
 
-//----------------------------------------------------ТУТ КОЛИЧЕСТВО ТРЕКОВ <= 150
+//-- КОЛИЧЕСТВО ТРЕКОВ <= 150
 for (let i = 1; i <= 150; i++) {
   const title = trackTitles[i] || `Трек ${i}`;
   const trackDiv = document.createElement('div');
@@ -768,7 +755,7 @@ audios.forEach(audio => {
   audio.addEventListener('play', () => {
     audios.forEach(otherAudio => {
       if (otherAudio !== audio) {
-        otherAudio.pause();  // при запуске одного аудио — останавливаем остальные
+        otherAudio.pause();
       }
     });
   });
@@ -777,7 +764,7 @@ audios.forEach(audio => {
     const volume = audio.volume;
     audios.forEach(otherAudio => {
       if (otherAudio !== audio) {
-        otherAudio.volume = volume; // при изменении громкости у одного — меняем у всех
+        otherAudio.volume = volume; 
       }
     });
   });
@@ -789,7 +776,7 @@ audios.forEach(audio => {
   window.addEventListener('DOMContentLoaded', () => {
     const audios = document.querySelectorAll('audio');
     audios.forEach(audio => {
-      audio.volume = 0.5; // громкость от 0 до 1
+      audio.volume = 0.5;
     });
   });
 </script>
