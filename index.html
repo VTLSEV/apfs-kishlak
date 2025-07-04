@@ -266,6 +266,7 @@
       <div class="tab active" data-tab="home">Главная</div>
       <div class="tab" data-tab="history">История</div>
       <div class="tab" data-tab="tracklist">Список песен</div>
+      <div class="tab" data-tab="favorites">Избранное</div>
       <div class="tab" data-tab="support">Поддержка/Донат</div>
 
     </nav>
@@ -489,11 +490,14 @@
     <li>Порно</li>
     <li>Я не верю в бога, я в себя не верю</li>
     <li>Таблетки</li>
+    <li>Без ответа</li>
   </ol>
 </section>
 
-
-
+<section id="favorites" class="tab-content">
+  <h2>Избранные треки</h2>
+  <div class="tracks-grid" id="favTracksGrid"></div>
+</section>
 
 <section id="support" class="tab-content" style="color: #fff; padding: 30px;">
   <h2 style="color: #ff4db8; font-size: 28px;">Поддержка / Донат</h2>
@@ -744,25 +748,78 @@ const trackTitles = {
   160: "Порно",
   161: "Я не верю в бога, я в себя не верю",
   162: "Таблетки",
+  163: "Без ответа",
 };
 
-//-- КОЛИЧЕСТВО ТРЕКОВ <= 162
-for (let i = 1; i <= 162; i++) {
+//-- КОЛИЧЕСТВО ТРЕКОВ <= 163
+for (let i = 1; i <= 163; i++) {
   const title = trackTitles[i] || `Трек ${i}`;
   const trackDiv = document.createElement('div');
   trackDiv.classList.add('track');
 
-  trackDiv.innerHTML = `
-    <h3>${i}. АПФС/КИШЛАК — ${title}</h3>
-    <audio controls>
-      <source src="music/track${i}.mp3" type="audio/mpeg" />
-      Ваш браузер не поддерживает элемент audio.
-    </audio>
-    <a class="download" href="music/track${i}.mp3" download>Скачать</a>
-  `;
+const isFavorite = JSON.parse(localStorage.getItem('favorites') || '[]').includes(i);
+trackDiv.innerHTML = `
+  <h3>${i}. АПФС/КИШЛАК — ${title}</h3>
+  <audio controls>
+    <source src="music/track${i}.mp3" type="audio/mpeg" />
+    Ваш браузер не поддерживает элемент audio.
+  </audio>
+  <a class="download" href="music/track${i}.mp3" download>Скачать</a>
+  <button class="fav-btn" data-id="${i}" style="margin-top:8px; background:none; color:${isFavorite ? '#ff4db8' : '#aaa'}; border:none; cursor:pointer;">${isFavorite ? '★ В избранном' : '☆ В избранное'}</button>
+`;
+
 
   tracksGrid.appendChild(trackDiv);
 }
+
+const favTracksGrid = document.getElementById('favTracksGrid');
+let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
+function renderFavorites() {
+  favTracksGrid.innerHTML = '';
+
+  if (favorites.length === 0) {
+    favTracksGrid.innerHTML = '<p>Нет избранных треков.</p>';
+    return;
+  }
+
+  favorites.forEach(i => {
+    const title = trackTitles[i] || `Трек ${i}`;
+    const trackDiv = document.createElement('div');
+    trackDiv.classList.add('track');
+
+    trackDiv.innerHTML = `
+      <h3>${i}. АПФС/КИШЛАК — ${title}</h3>
+      <audio controls>
+        <source src="music/track${i}.mp3" type="audio/mpeg" />
+        Ваш браузер не поддерживает элемент audio.
+      </audio>
+      <a class="download" href="music/track${i}.mp3" download>Скачать</a>
+    `;
+
+    favTracksGrid.appendChild(trackDiv);
+  });
+}
+
+renderFavorites();
+
+const favButtons = document.querySelectorAll('.fav-btn');
+
+favButtons.forEach(button => {
+  button.addEventListener('click', function () {
+    const id = parseInt(this.dataset.id);
+    let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+    if (favs.includes(id)) {
+      favs = favs.filter(f => f !== id);
+    } else {
+      favs.push(id);
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(favs));
+    location.reload();
+  });
+});
 
 
 
@@ -786,6 +843,17 @@ audios.forEach(audio => {
     });
   });
 });
+
+audios.forEach((audio, index) => {
+  audio.addEventListener('ended', () => {
+    const nextAudio = audios[index + 1];
+    if (nextAudio) {
+      nextAudio.play();
+      nextAudio.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  });
+});
+
 
 </script>
 
