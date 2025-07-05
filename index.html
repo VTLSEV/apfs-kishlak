@@ -2,869 +2,430 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="google-site-verification" content="4kGtpsWaLo9Ic73Zem47kdqbtMxHIgjYlhlhu9sDjtA" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Музыка Апфс — Кишлак</title>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Сброс и базовые стили */
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
-      padding: 40px 20px 60px;
       font-family: 'Poppins', sans-serif;
       background: #121212;
       color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
     }
-
-    /* Обертка всего контента */
-    .wrapper {
-      width: 100%;
-      max-width: 864px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    header {
+      text-align: center;
+      padding: 30px 15px 15px;
+      background: #1e1e1e;
+      box-shadow: 0 2px 10px rgba(255, 77, 184, 0.3);
     }
-
-    /* Вкладки сверху */
-    .tabs {
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      color: #ff4db8;
+    }
+    nav {
       display: flex;
       justify-content: center;
-      gap: 30px;
-      margin-bottom: 30px;
-      user-select: none;
-      width: 100%;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-top: 15px;
     }
-
-    .tab {
-      padding: 10px 20px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 1rem;
-      color: #ff4db8cc;
-      border-bottom: 3px solid transparent;
-      transition: all 0.3s ease;
-      text-align: center;
-      flex-grow: 1;
-      max-width: 150px;
-      user-select: none;
-    }
-
-    .tab:hover {
+    nav button {
+      background: none;
       color: #ff87ce;
+      border: none;
+      padding: 10px 15px;
+      cursor: pointer;
+      font-weight: bold;
+      border-bottom: 2px solid transparent;
     }
-
-    .tab.active {
-      border-bottom: 3px solid #ff4db8;
+    nav button.active {
       color: #ff4db8;
-      font-size: 1.1rem;
+      border-color: #ff4db8;
     }
-
-    /* Контейнер контента */
-    .container {
-      width: 100%;
-      background: #1e1e1e;
-      border-radius: 16px;
-      box-shadow: 0 0 20px #ff4db8aa;
-      padding: 30px 25px;
-      position: relative;
-      z-index: 1;
+    main {
+      max-width: 960px;
+      margin: auto;
+      padding: 20px;
     }
-
-    h1 {
-      font-family: 'Anton', sans-serif;
-      font-weight: 400;
-      font-size: 3rem;
-      background: linear-gradient(90deg, #ff4db8, #ff87ce);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow:
-        0 2px 5px rgba(255, 77, 184, 0.7),
-        0 0 15px rgba(255, 77, 184, 0.5);
-      text-align: center;
-      letter-spacing: 0.2em;
-      margin: 0 0 25px 0;
-      user-select: none;
-    }
-
-    /* Контент вкладок */
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    /* Контейнер треков — делаем две колонки */
-    .tracks-grid {
+    .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 20px 15px;
-      max-height: 70vh;
-      overflow-y: auto;
-      padding-right: 10px;
+      gap: 20px;
     }
-
     .track {
-      background: #282828;
+      background: #1e1e1e;
+      padding: 15px;
       border-radius: 10px;
-      padding: 15px 20px;
-      box-shadow: 0 0 10px #ff4db8aa;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeInUp 0.6s forwards;
+      box-shadow: 0 0 10px rgba(255, 77, 184, 0.3);
     }
-
-    /* Анимация с задержкой для первых 10 треков */
-    .track:nth-child(1) { animation-delay: 0.05s; }
-    .track:nth-child(2) { animation-delay: 0.1s; }
-    .track:nth-child(3) { animation-delay: 0.15s; }
-    .track:nth-child(4) { animation-delay: 0.2s; }
-    .track:nth-child(5) { animation-delay: 0.25s; }
-    .track:nth-child(6) { animation-delay: 0.3s; }
-    .track:nth-child(7) { animation-delay: 0.35s; }
-    .track:nth-child(8) { animation-delay: 0.4s; }
-    .track:nth-child(9) { animation-delay: 0.45s; }
-    .track:nth-child(10) { animation-delay: 0.5s; }
-
     .track h3 {
-      margin: 0 0 12px 0;
-      font-weight: 600;
-      font-size: 1.1rem;
+      margin: 0 0 10px;
+      font-size: 1rem;
       color: #ff87ce;
     }
-
-    audio {
+    .track audio {
       width: 100%;
-      outline: none;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      background: #000;
+      border-radius: 6px;
     }
-
-    .download {
+    .download, .fav-btn {
+      margin-top: 8px;
+      display: inline-block;
+      font-size: 0.9rem;
       color: #ff4db8;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      display: inline-block;
-      transition: color 0.3s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
     }
-    .download:hover {
-      color: #ff1ab8;
+    .fav-btn {
+      margin-left: 10px;
+      color: #aaa;
     }
-
-    footer {
-      margin-top: 30px;
-      text-align: center;
-      font-size: 0.85rem;
-      color: #888;
-      font-style: italic;
-      user-select: none;
-    }
-
-    .vertical-text {
-      position: fixed;
-      font-weight: 900;
-      color: #ff4db8cc;
-      font-family: 'Poppins', sans-serif;
-      user-select: none;
-      pointer-events: none;
-      z-index: 0;
-      letter-spacing: 0.1em;
-      line-height: 1.1;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .vertical-text.vtlsv {
-      right: 10px;
-      top: 35%;
-      font-size: 4vw;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      transform: translateY(-50%);
-    }
-
-    .vertical-text.kishlak {
-      left: 10px;
-      top: 45%;
-      font-size: 1.4vw;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      transform: translateY(-50%) rotate(180deg);
-      letter-spacing: 0.07em;
-      white-space: nowrap;
-    }
-
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    ol {
-      padding-left: 20px;
-      color: #ff87ce;
-      user-select: text;
-    }
-
-    /* Адаптив */
-    @media(max-width: 520px) {
-      .container {
-        padding: 25px 15px;
-      }
-
-      .vertical-text.vtlsv {
-        font-size: 8vw;
-        right: 10px;
-      }
-      .vertical-text.kishlak {
-        font-size: 4vw;
-        left: 10px;
-        top: 50%;
-      }
-
-      h1 {
-        font-size: 6vw;
-        letter-spacing: 0.1em;
-      }
-
-      .tabs {
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .tab {
-        font-size: 0.9rem;
-        padding: 8px 15px;
-        max-width: none;
-        flex-grow: unset;
-      }
-
-      /* На мобилках сделаем 1 колонку */
-      .tracks-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="wrapper">
-
-    <nav class="tabs">
-      <div class="tab active" data-tab="home">Главная</div>
-      <div class="tab" data-tab="history">История</div>
-      <div class="tab" data-tab="tracklist">Список песен</div>
-      <div class="tab" data-tab="favorites">Избранное</div>
-      <div class="tab" data-tab="support">Поддержка/Донат</div>
-
-    </nav>
-
-    <div class="container">
-
-      <section id="home" class="tab-content active">
-        <h1>Музыка Апфс — Кишлак</h1>
-
-        <div class="tracks-grid" id="tracksGrid">
-        </div>
-      </section>
-
-      <section id="history" class="tab-content">
-        <h2>История жизни Кишлака</h2>
-        <p>
-          <!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <title>Розовый текст</title>
-  <style>
-    .pink-text {
+    .fav-btn.active {
       color: #ff4db8;
     }
+    .hidden {
+      display: none;
+    }
+    footer {
+      text-align: center;
+      margin: 40px 0;
+      color: #888;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    form button {
+      background: #ff4db8;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
   </style>
 </head>
 <body>
-  <p class="pink-text">Максим Фисенко (псевдоним — Кишлак) — российский рэпер с непростой и неоднозначной биографией. Родился 14 декабря 1998 года в Североморске Мурманской области. Его детство прошло в сложной обстановке: отец и дед по отцовской линии страдали алкоголизмом и часто создавали в семье напряжённую атмосферу. Максим получил серьёзные травмы в детстве, и помощь ему была недоступна.
-
-С ранних лет Максим начал создавать музыку — первые записи появились в 14 лет. Его первый серьёзный проект «Автостопом по фазе сна» (АПФС) привлёк аудиторию подростков, говорящих на языке откровенных тем: наркотики, интим, суицидальные мысли. Помимо АПФС, у него были и другие проекты, например Bisuxual и «Солнечный Муслим», в которых он экспериментировал с жанрами — сочетая альтернативу, рэп, рок и электронику.
-
-Максим признавался, что в прошлом употреблял психотропные вещества, что накладывало отпечаток на его творчество. Однако со временем он осознал, что слушатели часто неправильно интерпретируют его посыл, воспринимая сатиру за пропаганду. В результате Кишлак временно приостановил проект АПФС и начал сольный путь под новым псевдонимом.
-
-Альбом «11:11» (2020) стал поворотным моментом: в нём раскрываются идеи смены эпохи и зарождения нового мира. Этот аудиотег теперь звучит во многих треках исполнителя. В 2021 году вышел альбом «Сборник хуйни и картинки», включающий хит «Я уебываю в джаз», набравший миллионы прослушиваний. В том же году Кишлак подписал контракт с Sony, что сделало музыку официальным источником дохода.
-
-В 2022 году артист переехал в Москву, выпустил альбом «Эскапист» и отправился в тур. Весной 2022-го Кишлак публично объявил о лечении от алкоголизма, после чего возобновил запись новых альбомов и концерты.
-
-Однако в 2023 году ситуация усложнилась: из-за обвинений в пропаганде запрещённых веществ и неоднозначного содержания текстов были отменены несколько концертов, включая в Чебоксарах, Оренбурге и Москве. В июле 2023-го на концерте в Омске рэпера и его команду атаковали неизвестные с применением перцового баллончика, причинив травмы. Позже он дал показания в полиции, а нападавших намеревались привлечь к ответственности коллективным иском.
-
-Прокуратура и Следственный комитет начали проверки творчества Кишлака по подозрениям в пропаганде наркотиков и нетрадиционных отношений. В ответ рэпер приостановил концертную деятельность «до лучших времён», но продолжил выпускать музыку — в том числе трек «Отмена», в котором размышляет о сорванных выступлениях.
-
-Личная жизнь исполнителя остаётся закрытой: в 2021–2022 годах он встречался с Анастасией Васиной, которой посвятил песню «Настя». Сейчас у него отношения с Александрой Лозовой, но подробности скрыты.
-
-Максим сталкивался с психическими трудностями — неоднократно проходил лечение в психоневрологическом диспансере и объявил о диагнозе «расстройство личности». Он открыто говорит о диссоциативном расстройстве, что отражено в его песнях.
-
-Интересный факт — в молодости, работая на автомойке, он сделал татуировку чёрной пигментацией глаз, после чего был отвергнут коллективом. Испытывая обиду, Максим совершил кражу и был пойман полицией.
-
-Кишлак ведёт трезвый образ жизни, но страдает от физических болей после отказа от зависимостей. Несмотря на сложности, он остаётся заметной фигурой российской музыкальной сцены, постоянно развивая своё уникальное звучание и открыто рассказывая о своих жизненных и творческих переживаниях.
-
-</p>
-</body>
-</html>
-
-<br />
-        </p>
-      </section>
-
-<section id="tracklist" class="tab-content">
-  <h2>Список песен</h2>
-  <ol>
-    <li>Alfa-Pvp</li>
-    <li>Апноэ</li>
-    <li>АФФ</li>
-    <li>бесит бумага</li>
-    <li>Вечер выпусников</li>
-    <li>Давит весна</li>
-    <li>Все будет нормально</li>
-    <li>Все о чем мечтал</li>
-    <li>Внутри</li>
-    <li>Вы все отбросы</li>
-    <li>Выдуманый друг</li>
-    <li>Выплакаться</li>
-    <li>Выпить или выпилиться</li>
-    <li>Вьюга</li>
-    <li>вьеби мне в голову</li>
-    <li>Героиновый шейк</li>
-    <li>Hyperjump</li>
-    <li>Голая красивая</li>
-    <li>Грязный Кайф</li>
-    <li>Грязь</li>
-    <li>Давай поправимся</li>
-    <li>Движение</li>
-    <li>Девочка</li>
-    <li>Деньги суки ауе</li>
-    <li>Дискотека 90-х</li>
-    <li>Дома плохо</li>
-    <li>Дорогу молодым</li>
-    <li>Дрочу на твои фото</li>
-    <li>Двинулься на тебе</li>
-    <li>Ей</li>
-    <li>Эхо-51</li>
-    <li>Эмо</li>
-    <li>Это второй</li>
-    <li>ЗПНС</li>
-    <li>Зажечь кровать</li>
-    <li>Зачем я сегодня проснулься</li>
-    <li>Девочка из питера</li>
-    <li>идите нахуй</li>
-    <li>Интро</li>
-    <li>Канет вниз</li>
-    <li>Картонка</li>
-    <li>Кислота</li>
-    <li>Клуб 27</li>
-    <li>Кодировка</li>
-    <li>Котик зайчик</li>
-    <li>Кругосветка в рамках черепной коробки</li>
-    <li>Ку ку</li>
-    <li>Лава</li>
-    <li>Лайтово</li>
-    <li>Ложь, жизнь, Я</li>
-    <li>Лучше</li>
-    <li>Лягушачий блюз</li>
-    <li>lv</li>
-    <li>Ма я лаю</li>
-    <li>Маленький бандит</li>
-    <li>Мам я умираю</li>
-    <li>Марина обойкина</li>
-    <li>Метадон</li>
-    <li>Мир для женщин</li>
-    <li>Мнение</li>
-    <li>Мне говорили</li>
-    <li>Мне хуево</li>
-    <li>Молча</li>
-    <li>Музыка</li>
-    <li>Музыки больше не будет</li>
-    <li>Мультики</li>
-    <li>Мы не одиноки</li>
-    <li>Накуримся, напемся</li>
-    <li>Нам пиздато</li>
-    <li>Настя</li>
-    <li>Нахуя</li>
-    <li>Не в адеквате</li>
-    <li>Не заберай меня домой</li>
-    <li>Не любишь</li>
-    <li>Ненавижу себя</li>
-    <li>Нонсенс</li>
-    <li>Один среди дорог</li>
-    <li>Опинариум</li>
-    <li>Опиаты</li>
-    <li>Оргазм</li>
-    <li>Открой мне двери</li>
-    <li>Отмена</li>
-    <li>Подъезд</li>
-    <li>Покурил и упал в обморок</li>
-    <li>Помню как вчера</li>
-    <li>По старому</li>
-    <li>Привидение</li>
-    <li>Просто погавкай</li>
-    <li>Прыгай с крыши</li>
-    <li>Пьяные города</li>
-    <li>Раздевайся</li>
-    <li>Ржавый</li>
-    <li>Робот</li>
-    <li>Романтика</li>
-    <li>Светлячок</li>
-    <li>Сборник хуйни и картинки</li>
-    <li>Сильнее соли</li>
-    <li>Скорость</li>
-    <li>Скорость света</li>
-    <li>Слезы</li>
-    <li>Слепые</li>
-    <li>Собачий вальс</li>
-    <li>Сонный паралич</li>
-    <li>Спина старика</li>
-    <li>Спокойной ночи, Максим</li>
-    <li>Стану твоей проблемой</li>
-    <li>Стиральная машина</li>
-    <li>Stigmata</li>
-    <li>Схавала Москва</li>
-    <li>Схик2</li>
-    <li>Там где нас нет</li>
-    <li>Танци большого пса</li>
-    <li>Твоя сука</li>
-    <li>Тень</li>
-    <li>Толер</li>
-    <li>Тот самый</li>
-    <li>Ты</li>
-    <li>Тупые Предки</li>
-    <li>Угу</li>
-    <li>Упс</li>
-    <li>Урка</li>
-    <li>Утиль</li>
-    <li>Фигридная сука</li>
-    <li>Фильтр выкуриных сигарет</li>
-    <li>Фобия</li>
-    <li>Хаусхолд</li>
-    <li>Хаунихау</li>
-    <li>Ширево</li>
-    <li>Шмон</li>
-    <li>Я все</li>
-    <li>Я впадаю в кому</li>
-    <li>Я диско-шар</li>
-    <li>Я заебал</li>
-    <li>Я настоящий</li>
-    <li>Я некрасивый</li>
-    <li>Я немного пьян</li>
-    <li>Я никогда не нюхал</li>
-    <li>Я хочу убить себя</li>
-    <li>Я уебываю в джаз</li>
-    <li>Я умру в Североморске</li>
-    <li>у-у-у</li>
-    <li>первый милион</li>
-    <li>да ну нах</li>
-    <li>-5326364312</li>
-    <li>$ALT $NUFF</li>
-    <li>11:11</li>
-    <li>15 припаратов</li>
-    <li>21</li>
-    <li>25</li>
-    <li>105 оттенков автобуса</li>
-    <li>Диссоциальное расстройство</li>
-    <li>наши с тобой выдумки</li>
-    <li>закончим</li>
-    <li>вьебы мне в четверг</li>
-    <li>девушка моей мечты</li>
-    <li>Не Отпускай</li>
-    <li>Позерство</li>
-    <li>bullterrier</li>
-    <li>ты улыбаешься?</li>
-    <li>Порно</li>
-    <li>Я не верю в бога, я в себя не верю</li>
-    <li>Таблетки</li>
-    <li>Без ответа</li>
-  </ol>
-</section>
-
-<section id="favorites" class="tab-content">
-  <h2>Избранные треки</h2>
-  <div class="tracks-grid" id="favTracksGrid"></div>
-</section>
-
-<section id="support" class="tab-content" style="color: #fff; padding: 30px;">
-  <h2 style="color: #ff4db8; font-size: 28px;">Поддержка / Донат</h2>
-
-  <div style="background: #1a1a1a; padding: 25px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 77, 184, 0.2); max-width: 600px; margin-bottom: 30px;">
-    <h3 style="margin-bottom: 20px; color: #ff4db8;">Связаться с поддержкой</h3>
-    <form action="https://formsubmit.co/apfs.kishlakk@gmail.com" method="POST" onsubmit="return validateSupportForm()">
-
-      <li>Ответ придёт на указанный Gmail.</li>
-      <label for="email">Ваш Gmail:</label><br>
-      <input type="email" id="email" name="email" required placeholder="example@gmail.com"
-        style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;"><br>
-
-      <label for="reason">Причина обращения:</label><br>
-      <select id="reason" name="reason" required
-        style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;">
-        <option value="">-- Выберите причину --</option>
-        <option value="Функция не работает">Функция не работает</option>
-        <option value="Предложение">Предложение</option>
-        <option value="Не хватает песни">Не хватает песни</option>
-        <option value="Другое">Другое</option>
-      </select><br>
-
-      <label for="message">Сообщение:</label><br>
-      <textarea id="message" name="message" rows="5" required placeholder="Введите ваше сообщение..."
-        style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px; border-radius:10px; border:none; background:#2a2a2a; color:#fff;"></textarea><br>
-
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_template" value="box">
-
-      <button type="submit"
-        style="background:#ff4db8; border:none; padding:12px 25px; color:#fff; border-radius:10px; cursor:pointer; font-weight:bold; transition:0.3s;">
-        Отправить
-      </button>
-    </form>
-  </div>
-
-  <div>
-    <p style="margin-bottom: 10px;">Спасибо за поддержку! Вот мои ссылки:</p>
-    <a href="https://steamcommunity.com/id/vtls_x/" target="_blank" rel="noopener"
-       style="color: #ff4db8; text-decoration: underline;">Мой Steam профиль</a><br>
-    <a href="https://steamcommunity.com/tradeoffer/new/?partner=1703137102&token=JwLClXaF" target="_blank" rel="noopener"
-       style="color: #ff4db8; text-decoration: underline;">Моя Trade Ссылка</a>
-  </div>
+  <header>
+    <h1>Музыка Апфс — Кишлак</h1>
+    <nav>
+      <button class="tab active" data-tab="all">Все треки</button>
+      <button class="tab" data-tab="favorites">Избранное</button>
+      <button class="tab" data-tab="list">Список</button>
+      <button class="tab" data-tab="support">Поддержка</button>
+    </nav>
+  </header>
+  <main>
+    <section id="all" class="tab-content">
+      <div class="grid" id="trackGrid"></div>
+    </section>
+    <section id="favorites" class="tab-content hidden">
+      <div class="grid" id="favGrid"></div>
+    </section>
+    <section id="list" class="tab-content hidden">
+      <h2>Список песен</h2>
+      <ol id="trackList"></ol>
+    </section>
+    <section id="support" class="tab-content hidden">
+      <form action="https://formsubmit.co/apfs.kishlakk@gmail.com" method="POST" onsubmit="return validateSupportForm()">
+        <input type="email" name="email" placeholder="Ваш Gmail" required />
+        <select name="reason" required>
+          <option value="">-- Причина --</option>
+          <option value="Функция не работает">Функция не работает</option>
+          <option value="Предложение">Предложение</option>
+          <option value="Не хватает песни">Не хватает песни</option>
+          <option value="Другое">Другое</option>
+        </select>
+        <textarea name="message" placeholder="Сообщение..." rows="5" required></textarea>
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_template" value="box" />
+        <button type="submit">Отправить</button>
+      </form>
+    </section>
+  </main>
+  <footer>© 2025 Фанат Апфс — Все треки собраны с любовью</footer>
 
   <script>
+    // Табы переключение
+    const tabs = document.querySelectorAll('.tab');
+    const contents = document.querySelectorAll('.tab-content');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        contents.forEach(c => c.classList.add('hidden'));
+        document.getElementById(tab.dataset.tab).classList.remove('hidden');
+      });
+    });
+
+    // Полный массив треков из твоего списка
+    const titles = [
+      "Alfa-Pvp",
+      "Апноэ",
+      "АФФ",
+      "бесит бумага",
+      "Вечер выпусников",
+      "Давит весна",
+      "Все будет нормально",
+      "Все о чем мечтал",
+      "Внутри",
+      "Вы все отбросы",
+      "Выдуманый друг",
+      "Выплакаться",
+      "Выпить или выпилиться",
+      "Вьюга",
+      "вьеби мне в голову",
+      "Героиновый шейк",
+      "Hyperjump",
+      "Голая красивая",
+      "Грязный Кайф",
+      "Грязь",
+      "Давай поправимся",
+      "Движение",
+      "Девочка",
+      "Деньги суки ауе",
+      "Дискотека 90-х",
+      "Дома плохо",
+      "Дорогу молодым",
+      "Дрочу на твои фото",
+      "Двинулься на тебе",
+      "Ей",
+      "Эхо-51",
+      "Эмо",
+      "Это второй",
+      "ЗПНС",
+      "Зажечь кровать",
+      "Зачем я сегодня проснулься",
+      "Девочка из питера",
+      "идите нахуй",
+      "Интро",
+      "Канет вниз",
+      "Картонка",
+      "Кислота",
+      "Клуб 27",
+      "Кодировка",
+      "Котик зайчик",
+      "Кругосветка в рамках черепной коробки",
+      "Ку ку",
+      "Лава",
+      "Лайтово",
+      "Ложь, жизнь, Я",
+      "Лучше",
+      "Лягушачий блюз",
+      "lv",
+      "Ма я лаю",
+      "Маленький бандит",
+      "Мам я умираю",
+      "Марина обойкина",
+      "Метадон",
+      "Мир для женщин",
+      "Мнение",
+      "Мне говорили",
+      "Мне хуево",
+      "Молча",
+      "Музыка",
+      "Музыки больше не будет",
+      "Мультики",
+      "Мы не одиноки",
+      "Накуримся, напемся",
+      "Нам пиздато",
+      "Настя",
+      "Нахуя",
+      "Не в адеквате",
+      "Не заберай меня домой",
+      "Не любишь",
+      "Ненавижу себя",
+      "Нонсенс",
+      "Один среди дорог",
+      "Опинариум",
+      "Опиаты",
+      "Оргазм",
+      "Открой мне двери",
+      "Отмена",
+      "Подъезд",
+      "Покурил и упал в обморок",
+      "Помню как вчера",
+      "По старому",
+      "Привидение",
+      "Просто погавкай",
+      "Прыгай с крыши",
+      "Пьяные города",
+      "Раздевайся",
+      "Ржавый",
+      "Робот",
+      "Романтика",
+      "Светлячок",
+      "Сборник хуйни и картинки",
+      "Сильнее соли",
+      "Скорость",
+      "Скорость света",
+      "Слезы",
+      "Слепые",
+      "Собачий вальс",
+      "Сонный паралич",
+      "Спина старика",
+      "Спокойной ночи, Максим",
+      "Стану твоей проблемой",
+      "Стиральная машина",
+      "Stigmata",
+      "Схавала Москва",
+      "Схик2",
+      "Там где нас нет",
+      "Танци большого пса",
+      "Твоя сука",
+      "Тень",
+      "Толер",
+      "Тот самый",
+      "Ты",
+      "Тупые Предки",
+      "Угу",
+      "Упс",
+      "Урка",
+      "Утиль",
+      "Фигридная сука",
+      "Фильтр выкуриных сигарет",
+      "Фобия",
+      "Хаусхолд",
+      "Хаунихау",
+      "Ширево",
+      "Шмон",
+      "Я все",
+      "Я впадаю в кому",
+      "Я диско-шар",
+      "Я заебал",
+      "Я настоящий",
+      "Я некрасивый",
+      "Я немного пьян",
+      "Я никогда не нюхал",
+      "Я хочу убить себя",
+      "Я уебываю в джаз",
+      "Я умру в Североморске",
+      "у-у-у",
+      "первый милион",
+      "да ну нах",
+      "-5326364312",
+      "$ALT $NUFF",
+      "11:11",
+      "15 припаратов",
+      "21",
+      "25",
+      "105 оттенков автобуса",
+      "Диссоциальное расстройство",
+      "Выдумки",
+      "закончим",
+      "вьебы мне в четверг",
+      "девушка моей мечты",
+      "Не Отпускай",
+      "Позерство",
+      "bullterrier",
+      "ты улыбаешься?",
+      "Порно",
+      "Я не верю в бога, я в себя не верю",
+      "Таблетки",
+      "Без ответа",
+      "Пацанский Эмо Рэп",
+      "Километры",
+      "Болею тобой"
+    ];
+
+    // Получаем контейнеры
+    const trackGrid = document.getElementById('trackGrid');
+    const favGrid = document.getElementById('favGrid');
+    const trackList = document.getElementById('trackList');
+    // Получаем избранное из localStorage или пустой массив
+    let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+    // Функция отрисовки треков
+    function renderTracks() {
+      trackGrid.innerHTML = '';
+      favGrid.innerHTML = '';
+      trackList.innerHTML = '';
+
+      titles.forEach((title, i) => {
+        const id = i + 1;
+        // Создаем карточку трека для "Все треки"
+        const track = document.createElement('div');
+        track.className = 'track';
+
+        const isFav = favorites.includes(id);
+
+        track.innerHTML = `
+          <h3>${id}. АПФС/КИШЛАК — ${title}</h3>
+          <audio controls src="music/track${id}.mp3"></audio>
+          <a class="download" href="music/track${id}.mp3" download>Скачать</a>
+          <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${id}">
+            ${isFav ? '★ В избранном' : '☆ В избранное'}
+          </button>
+        `;
+
+        trackGrid.appendChild(track);
+
+        // Создаем пункт списка
+        const li = document.createElement('li');
+        li.textContent = title;
+        trackList.appendChild(li);
+
+        // Если в избранном — добавляем копию в избранное
+        if (isFav) {
+          const favTrack = track.cloneNode(true);
+          // Обработчик для кнопок избранного внутри избранного
+          favTrack.querySelector('button').addEventListener('click', favClickHandler);
+          favGrid.appendChild(favTrack);
+        }
+      });
+
+      // Добавляем обработчики на кнопки избранного в основном списке
+      document.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.removeEventListener('click', favClickHandler);
+        btn.addEventListener('click', favClickHandler);
+      });
+    }
+
+    // Обработчик клика на кнопку избранного
+    function favClickHandler(e) {
+      const id = +e.currentTarget.dataset.id;
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+      } else {
+        favorites.push(id);
+      }
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      renderTracks();
+    }
+
+    // При воспроизведении аудио — ставим паузу у всех остальных
+    document.addEventListener('play', e => {
+      if (e.target.tagName === 'AUDIO') {
+        document.querySelectorAll('audio').forEach(audio => {
+          if (audio !== e.target) audio.pause();
+        });
+      }
+    }, true);
+
+    // Валидация формы поддержки — проверяем Gmail
     function validateSupportForm() {
-      const email = document.getElementById("email").value.trim();
+      const email = document.querySelector('input[type=email]').value.trim();
       if (!email.endsWith("@gmail.com")) {
         alert("Введите действительный Gmail адрес.");
         return false;
       }
       return true;
     }
+
+    // Отрисовываем треки при загрузке
+    renderTracks();
   </script>
-</section>
-
-
-    </div>
-  </div>
-
-  <footer>
-        © 2025 Фанат Апфс — Все треки собраны с любовью
-        <footer>
-          Сайт создал: VTLSEV:)
-
-  <div class="vertical-text kishlak">VTLSEV</div>
-  <div class="vertical-text vtlsv">Кишлак</div>
-
-  <script>
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        const target = tab.dataset.tab;
-        tabContents.forEach(content => {
-          content.classList.toggle('active', content.id === target);
-        });
-      });
-    });
-
-    const tracksGrid = document.getElementById('tracksGrid');
-
-const trackTitles = {
-  1: "Alfa-Pvp",
-  2: "Апноэ",
-  3: "АФФ",
-  4: "Бесит бумага",
-  5: "Вечер выпусников",
-  6: "Давит весна",
-  7: "Все будет нормально",
-  8: "Все, о чем мечтал",
-  9: "Внутри",
-  10: "Вы все отбросы",
-  11: "Выдуманый друг",
-  12: "Выплакаться",
-  13: "Выпить или выпилиться",
-  14: "Вьюга",
-  15: "Вьеби мне в голову",
-  16: "Героиновый шейк",
-  17: "Hyperjump",
-  18: "Голая красивая",
-  19: "Грязный Кайф",
-  20: "Грязь",
-  21: "Давай Поправимся",
-  22: "Движение",
-  23: "Девочка",
-  24: "Деньги суки ауе",
-  25: "Дискотека 90-х",
-  26: "Дома плохо",
-  27: "Дорогу молодым",
-  28: "Дрочу на твои фото",
-  29: "Двинулься на тебе",
-  30: "Ей",
-  31: "Эхо-51",
-  32: "Эмо",
-  33: "Это второй",
-  34: "ЗПНС",
-  35: "Зажечь кровать",
-  36: "Зачем я сегодня проснулься",
-  37: "Девочка из питера",
-  38: "идите нахуй",
-  39: "Интро",
-  40: "Канет вниз",
-  41: "Картонка",
-  42: "Кислота",
-  43: "Клуб 27",
-  44: "Кодировка",
-  45: "Котик зайчик",
-  46: "Кругосветка в рамках черепной коробки",
-  47: "Ку ку",
-  48: "Лава",
-  49: "Лайтово",
-  50: "Ложь, жизнь, Я",
-  51: "Лучше",
-  52: "Бред Котара",
-  53: "lv",
-  54: "Ма я лаю",
-  55: "Маленький бандит",
-  56: "Мам я умираю",
-  57: "Марина обойкина",
-  58: "Метадон",
-  59: "Мир для женщин",
-  60: "Мнение",
-  61: "Мне говорили",
-  62: "Мне хуево",
-  63: "Молча",
-  64: "Музыка",
-  65: "Музыки больше не будет",
-  66: "Мультики",
-  67: "Мы не одиноки",
-  68: "Накуримся, напемся",
-  69: "Нам пиздато",
-  70: "Настя",
-  71: "Нахуя",
-  72: "Не в адеквате",
-  73: "Не заберай меня домой",
-  74: "Не любишь",
-  75: "Ненавижу себя",
-  76: "Нонсенс",
-  77: "Один среди дорог",
-  78: "Опинариум",
-  79: "Опиаты",
-  80: "Оргазм",
-  81: "Открой мне двери",
-  82: "Отмена",
-  83: "Подъезд",
-  84: "Покурил и упал в обморок",
-  85: "Помню как вчера",
-  86: "По старому",
-  87: "Привидение",
-  88: "Просто погавкай",
-  89: "Прыгай с крыши",
-  90: "Пьяные города",
-  91: "Раздевайся",
-  92: "Ржавый",
-  93: "Робот",
-  94: "Романтика",
-  95: "Светлячок",
-  96: "Сборник хуйни и картинки",
-  97: "Сильнее соли",
-  98: "Скорость",
-  99: "Скорость света",
-  100: "Слезы",
-  101: "Слепые",
-  102: "Собачий вальс",
-  103: "Сонный паралич",
-  104: "Спина старика",
-  105: "Спокойной ночи, Максим",
-  106: "Стану твоей проблемой",
-  107: "Стиральная машина",
-  108: "Stigmata",
-  109: "Схавала Москва",
-  110: "Схик2",
-  111: "Там где нас нет",
-  112: "Танци большого пса",
-  113: "Твоя сука",
-  114: "Тень",
-  115: "Толер",
-  116: "Тот самый",
-  117: "Ты",
-  118: "Тупые Предки",
-  119: "Угу",
-  120: "Упс",
-  121: "Урка",
-  122: "Утиль",
-  123: "Фигридная сука",
-  124: "Фильтр выкуриных сигарет",
-  125: "Фобия",
-  126: "Хаусхолд",
-  127: "Хаунихау",
-  128: "Ширево",
-  129: "Шмон",
-  130: "Я все",
-  131: "Я впадаю в кому",
-  132: "Я диско-шар",
-  133: "Я заебал",
-  134: "Я настоящий",
-  135: "Я некрасивый",
-  136: "Я немного пьян",
-  137: "Я никогда не нюхал",
-  138: "Я хочу убить себя",
-  139: "Я уебываю в джаз",
-  140: "Я умру в Североморске",
-  141: "у-у-у",
-  142: "первый милион",
-  143: "да ну нах",
-  144: "-5326364312",
-  145: "$ALT $NUFF",
-  146: "11:11",
-  147: "15 припаратов",
-  148: "21",
-  149: "25",
-  150: "105 оттенков автобуса",
-  151: "Диссоциальное расстройство",
-  152: "Наши с тобой выдумки",
-  153: "Закончим",
-  154: "вьебы мне в четверг",
-  155: "девушка моей мечты",
-  156: "Не Отпускай",
-  157: "Позерство",
-  158: "bullterrier",
-  159: "ты улыбаешься?",
-  160: "Порно",
-  161: "Я не верю в бога, я в себя не верю",
-  162: "Таблетки",
-  163: "Без ответа",
-};
-
-//-- КОЛИЧЕСТВО ТРЕКОВ <= 163
-for (let i = 1; i <= 163; i++) {
-  const title = trackTitles[i] || `Трек ${i}`;
-  const trackDiv = document.createElement('div');
-  trackDiv.classList.add('track');
-
-const isFavorite = JSON.parse(localStorage.getItem('favorites') || '[]').includes(i);
-trackDiv.innerHTML = `
-  <h3>${i}. АПФС/КИШЛАК — ${title}</h3>
-  <audio controls>
-    <source src="music/track${i}.mp3" type="audio/mpeg" />
-    Ваш браузер не поддерживает элемент audio.
-  </audio>
-  <a class="download" href="music/track${i}.mp3" download>Скачать</a>
-  <button class="fav-btn" data-id="${i}" style="margin-top:8px; background:none; color:${isFavorite ? '#ff4db8' : '#aaa'}; border:none; cursor:pointer;">${isFavorite ? '★ В избранном' : '☆ В избранное'}</button>
-`;
-
-
-  tracksGrid.appendChild(trackDiv);
-}
-
-const favTracksGrid = document.getElementById('favTracksGrid');
-let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-
-function renderFavorites() {
-  favTracksGrid.innerHTML = '';
-
-  if (favorites.length === 0) {
-    favTracksGrid.innerHTML = '<p>Нет избранных треков.</p>';
-    return;
-  }
-
-  favorites.forEach(i => {
-    const title = trackTitles[i] || `Трек ${i}`;
-    const trackDiv = document.createElement('div');
-    trackDiv.classList.add('track');
-
-    trackDiv.innerHTML = `
-      <h3>${i}. АПФС/КИШЛАК — ${title}</h3>
-      <audio controls>
-        <source src="music/track${i}.mp3" type="audio/mpeg" />
-        Ваш браузер не поддерживает элемент audio.
-      </audio>
-      <a class="download" href="music/track${i}.mp3" download>Скачать</a>
-    `;
-
-    favTracksGrid.appendChild(trackDiv);
-  });
-}
-
-renderFavorites();
-
-const favButtons = document.querySelectorAll('.fav-btn');
-
-favButtons.forEach(button => {
-  button.addEventListener('click', function () {
-    const id = parseInt(this.dataset.id);
-    let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
-
-    if (favs.includes(id)) {
-      favs = favs.filter(f => f !== id);
-    } else {
-      favs.push(id);
-    }
-
-    localStorage.setItem('favorites', JSON.stringify(favs));
-    location.reload();
-  });
-});
-
-
-
-  const audios = document.querySelectorAll('audio');
-
-audios.forEach(audio => {
-  audio.addEventListener('play', () => {
-    audios.forEach(otherAudio => {
-      if (otherAudio !== audio) {
-        otherAudio.pause();
-      }
-    });
-  });
-
-  audio.addEventListener('volumechange', () => {
-    const volume = audio.volume;
-    audios.forEach(otherAudio => {
-      if (otherAudio !== audio) {
-        otherAudio.volume = volume; 
-      }
-    });
-  });
-});
-
-audios.forEach((audio, index) => {
-  audio.addEventListener('ended', () => {
-    const nextAudio = audios[index + 1];
-    if (nextAudio) {
-      nextAudio.play();
-      nextAudio.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-  });
-});
-
-
-</script>
-
-<script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const audios = document.querySelectorAll('audio');
-    audios.forEach(audio => {
-      audio.volume = 0.5;
-    });
-  });
-</script>
-
 </body>
 </html>
