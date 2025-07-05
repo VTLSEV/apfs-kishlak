@@ -53,6 +53,11 @@
       grid-template-columns: 1fr 1fr;
       gap: 20px;
     }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
     .track {
       background: #1e1e1e;
       padding: 15px;
@@ -116,34 +121,25 @@
     }
     /* Для вкладки История */
     #history {
-      color: #ff4db8;
+      color: #ff4db8; /* розовый цвет */
       font-size: 1.2rem;
       text-align: center;
       padding: 30px;
       font-weight: bold;
     }
-
-    /* Кнопка загрузки */
     #loadMoreBtn {
       grid-column: 1 / -1;
+      margin-top: 10px;
       background: #ff4db8;
-      border: none;
       color: #fff;
-      font-weight: bold;
-      font-size: 1rem;
+      border: none;
       padding: 12px;
       border-radius: 10px;
       cursor: pointer;
-      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1rem;
       justify-self: center;
       width: 200px;
-    }
-
-    /* Адаптив для телефонов - 1 колонка */
-    @media (max-width: 600px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
@@ -378,31 +374,69 @@
     const trackList = document.getElementById('trackList');
     let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-    // Возвращает число треков для загрузки в зависимости от ширины экрана
-    function getTracksPerPage() {
-      return window.innerWidth <= 600 ? 10 : 25;
+    let currentTrackCount = 0;
+
+    function renderTrackList() {
+      trackList.innerHTML = '';
+      titles.forEach(title => {
+        const li = document.createElement('li');
+        li.textContent = title;
+        trackList.appendChild(li);
+      });
     }
 
-    let tracksPerPage = getTracksPerPage();
-    let currentTrackCount = tracksPerPage;
+    function setupFavButtons() {
+      document.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.removeEventListener('click', favClickHandler);
+        btn.addEventListener('click', favClickHandler);
+      });
+    }
 
-    window.addEventListener('resize', () => {
-      const newTracksPerPage = getTracksPerPage();
-      if (newTracksPerPage !== tracksPerPage) {
-        tracksPerPage = newTracksPerPage;
-        if (currentTrackCount < tracksPerPage) {
-          currentTrackCount = tracksPerPage;
-          renderTracks();
-        }
+    function favClickHandler(e) {
+      const id = +e.currentTarget.dataset.id;
+      if (favorites.includes(id)) {
+        favorites = favorites.filter(f => f !== id);
+      } else {
+        favorites.push(id);
       }
-    });
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      renderFavorites();
+      updateFavButtons();
+    }
 
-    function renderTracks() {
-      trackGrid.innerHTML = '';
+    function updateFavButtons() {
+      document.querySelectorAll('.fav-btn').forEach(btn => {
+        const id = +btn.dataset.id;
+        btn.classList.toggle('active', favorites.includes(id));
+        btn.textContent = favorites.includes(id) ? '★ В избранном' : '☆ В избранное';
+      });
+    }
+
+    function renderFavorites() {
       favGrid.innerHTML = '';
-      trackList.innerHTML = '';
+      favorites.forEach(id => {
+        if (id - 1 < titles.length) {
+          const title = titles[id - 1];
+          const track = document.createElement('div');
+          track.className = 'track';
+          track.innerHTML = `
+            <h3>${id}. АПФС/КИШЛАК — ${title}</h3>
+            <audio controls src="music/track${id}.mp3" data-id="${id}"></audio>
+            <a class="download" href="music/track${id}.mp3" download>Скачать</a>
+            <button class="fav-btn active" data-id="${id}">★ В избранном</button>
+          `;
+          favGrid.appendChild(track);
+        }
+      });
+      setupFavButtons();
+      setupAudioEndEvents();
+    }
 
-      for (let i = 0; i < Math.min(currentTrackCount, titles.length); i++) {
+    function loadMoreTracks() {
+      const tracksPerPage = window.innerWidth <= 600 ? 10 : 26;
+      const nextCount = Math.min(currentTrackCount + tracksPerPage, titles.length);
+
+      for (let i = currentTrackCount; i < nextCount; i++) {
         const id = i + 1;
         const title = titles[i];
         const track = document.createElement('div');
@@ -420,51 +454,30 @@
         `;
 
         trackGrid.appendChild(track);
-
-        const li = document.createElement('li');
-        li.textContent = title;
-        trackList.appendChild(li);
-
-        if (isFav) {
-          const favTrack = track.cloneNode(true);
-          favTrack.querySelector('button').addEventListener('click', favClickHandler);
-          favGrid.appendChild(favTrack);
-        }
       }
 
-      // Кнопка Загрузить ещё, если есть что грузить
+      currentTrackCount = nextCount;
+
+      let loadMoreBtn = document.getElementById('loadMoreBtn');
       if (currentTrackCount < titles.length) {
-        const loadMoreBtn = document.createElement('button');
-        loadMoreBtn.id = 'loadMoreBtn';
-        loadMoreBtn.textContent = 'Загрузить ещё';
-        loadMoreBtn.addEventListener('click', () => {
-          currentTrackCount += tracksPerPage;
-          renderTracks();
-        });
-        trackGrid.appendChild(loadMoreBtn);
+        if (!loadMoreBtn) {
+          loadMoreBtn = document.createElement('button');
+          loadMoreBtn.id = 'loadMoreBtn';
+          loadMoreBtn.textContent = 'Загрузить ещё';
+          loadMoreBtn.addEventListener('click', () => {
+            loadMoreTracks();
+          });
+          trackGrid.appendChild(loadMoreBtn);
+        }
+      } else {
+        if (loadMoreBtn) loadMoreBtn.remove();
       }
 
-      // Навешиваем обработчики на кнопки избранного
-      document.querySelectorAll('.fav-btn').forEach(btn => {
-        btn.removeEventListener('click', favClickHandler);
-        btn.addEventListener('click', favClickHandler);
-      });
-
+      setupFavButtons();
       setupAudioEndEvents();
     }
 
-    function favClickHandler(e) {
-      const id = +e.currentTarget.dataset.id;
-      if (favorites.includes(id)) {
-        favorites = favorites.filter(f => f !== id);
-      } else {
-        favorites.push(id);
-      }
-      localStorage.setItem('favorites', JSON.stringify(favorites));
-      renderTracks();
-    }
-
-    // Автоматическое переключение на следующий трек
+    // Автовоспроизведение следующего трека
     function setupAudioEndEvents() {
       const audios = document.querySelectorAll('#all audio');
       audios.forEach(audio => {
@@ -474,14 +487,15 @@
     }
 
     function onTrackEnded(e) {
+      const currentAudio = e.target;
       const allAudios = Array.from(document.querySelectorAll('#all audio'));
-      const currentIndex = allAudios.indexOf(e.target);
+      const currentIndex = allAudios.indexOf(currentAudio);
       if (currentIndex !== -1 && currentIndex < allAudios.length - 1) {
-        allAudios[currentIndex + 1].play();
+        const nextAudio = allAudios[currentIndex + 1];
+        nextAudio.play();
       }
     }
 
-    // Остановка других аудио при проигрывании
     document.addEventListener('play', e => {
       if (e.target.tagName === 'AUDIO') {
         document.querySelectorAll('audio').forEach(audio => {
@@ -499,7 +513,10 @@
       return true;
     }
 
-    renderTracks();
+    // Инициализация
+    renderTrackList();
+    loadMoreTracks();
+    renderFavorites();
   </script>
 </body>
 </html>
