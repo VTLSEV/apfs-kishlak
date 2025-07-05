@@ -122,6 +122,13 @@
       padding: 30px;
       font-weight: bold;
     }
+
+    /* Мобильная адаптация: 1 колонка */
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -355,7 +362,7 @@
     const trackList = document.getElementById('trackList');
     let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-    const tracksPerPage = 25;  // количество треков на страницу
+    const tracksPerPage = 25;
     let currentTrackCount = tracksPerPage;
 
     function renderTracks() {
@@ -392,7 +399,6 @@
         }
       }
 
-      // Кнопка "Загрузить ещё"
       if(currentTrackCount < titles.length) {
         const loadMoreBtn = document.createElement('button');
         loadMoreBtn.textContent = 'Загрузить ещё';
