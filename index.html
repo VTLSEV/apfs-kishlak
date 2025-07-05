@@ -44,6 +44,10 @@
       border-color: #ff4db8;
     }
     main {
+  position: relative;   /* Создаёт контекст для z-index */
+  z-index: 10;          /* Чтобы main был выше фона */
+}
+    main {
       max-width: 960px;
       margin: auto;
       padding: 20px;
@@ -141,6 +145,113 @@
       justify-self: center;
       width: 200px;
     }
+
+    #kishlak-glow {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 3rem;
+  color: #ff4db8;
+  text-shadow:
+    0 0 5px #ff4db8,
+    0 0 10px #ff4db8,
+    0 0 20px #ff87ce,
+    0 0 30px #ff87ce;
+  animation: pulse-glow-text 4s ease-in-out infinite;
+  cursor: default;
+  user-select: none;
+  z-index: 9999;
+}
+
+@keyframes pulse-glow-text {
+  0%, 100% {
+    text-shadow:
+      0 0 5px #ff4db8,
+      0 0 10px #ff4db8,
+      0 0 20px #ff87ce,
+      0 0 30px #ff87ce;
+    color: #ff4db8;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #ff87ce,
+      0 0 20px #ff87ce,
+      0 0 30px #ff4db8,
+      0 0 40px #ff4db8;
+    color: #ff87ce;
+  }
+}
+
+#apfs-glow, #kishlak-glow {
+  position: fixed;
+  right: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+  font-size: 3rem;
+  color: #ff4db8;
+  text-shadow:
+    0 0 5px #ff4db8,
+    0 0 10px #ff4db8,
+    0 0 20px #ff87ce,
+    0 0 30px #ff87ce;
+  animation: pulse-glow-text 4s ease-in-out infinite;
+  cursor: default;
+  user-select: none;
+  z-index: 9999;
+  width: max-content;
+  text-align: center;
+}
+
+#apfs-glow {
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+#kishlak-glow {
+  top: 60%;
+  transform: translateY(-50%);
+}
+
+@keyframes pulse-glow-text {
+  0%, 100% {
+    text-shadow:
+      0 0 5px #ff4db8,
+      0 0 10px #ff4db8,
+      0 0 20px #ff87ce,
+      0 0 30px #ff87ce;
+    color: #ff4db8;
+  }
+  50% {
+    text-shadow:
+      0 0 10px #ff87ce,
+      0 0 20px #ff87ce,
+      0 0 30px #ff4db8,
+      0 0 40px #ff4db8;
+    color: #ff87ce;
+  }
+}
+
+.bg-text {
+  position: fixed;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #ff4db8dd;          /* Ярче, чуть прозрачный */
+  user-select: none;
+  pointer-events: none;      /* Чтобы клики проходили сквозь */
+  animation: bg-pulse 6s ease-in-out infinite;
+  white-space: nowrap;
+  text-shadow:
+    0 0 8px #ff4db8dd,
+    0 0 16px #ff87cede;
+  z-index: 0;                /* Низкий уровень, чтобы быть под контентом */
+  opacity: 0.7;
+}
+
+
   </style>
 </head>
 <body>
@@ -188,6 +299,13 @@
       </form>
     </section>
   </main>
+  <div class="bg-text">VTLSEV</div>
+  <div class="bg-text">Кишлак</div>
+  <div class="bg-text">АПФС</div>
+  <div class="bg-text">Солнечный Муслим</div>
+  <div class="bg-text">Bisexual from the village</div>
+  <div class="bg-text">Возвращайся</div>
+  <div class="bg-text">11:11</div>
   <footer>© 2025 Фанат Апфс — Все треки собраны с любовью</footer>
 
   <script>
@@ -543,6 +661,64 @@ function updateLoadMoreVisibility() {
     renderTrackList();
     loadMoreTracks();
     renderFavorites();
+
+        renderTrackList();
+    loadMoreTracks();
+    renderFavorites();
   </script>
+
+<script>
+  document.body.style.background = '#0a0a0a';
+  document.body.style.backgroundAttachment = 'fixed';
+
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes smooth-pulse-glow {
+      0%, 100% {
+        box-shadow: 0 0 8px #ff4db8, 0 0 16px #ff4db8;
+        background-color: #1a1a1a;
+      }
+      50% {
+        box-shadow: 0 0 20px #ff87ce, 0 0 40px #ff87ce;
+        background-color: #2a1a2a;
+      }
+    }
+
+    header, .track, form button, #loadMoreBtn {
+      animation: smooth-pulse-glow 8s ease-in-out infinite;
+      transition: background-color 0.5s ease;
+      border-radius: 10px;
+    }
+
+    .track:hover {
+      box-shadow: 0 0 30px #ff87ce;
+      transition: box-shadow 0.5s ease;
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+
+  </script>
+  <script>
+  const bgTexts = document.querySelectorAll('.bg-text');
+  const margin = 50;
+
+  function randomPosition(el) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const x = Math.random() * (vw - margin * 2) + margin;
+    const y = Math.random() * (vh - margin * 2) + margin;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+  }
+
+  function positionAll() {
+    bgTexts.forEach(el => randomPosition(el));
+  }
+
+  window.addEventListener('resize', positionAll);
+  positionAll();
+</script>
+
 </body>
 </html>
