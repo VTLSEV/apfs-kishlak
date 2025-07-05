@@ -116,17 +116,33 @@
     }
     /* Для вкладки История */
     #history {
-      color: #ff4db8; /* розовый цвет */
+      color: #ff4db8;
       font-size: 1.2rem;
       text-align: center;
       padding: 30px;
       font-weight: bold;
     }
 
-    /* Мобильная адаптация: 1 колонка */
+    /* Кнопка загрузки */
+    #loadMoreBtn {
+      grid-column: 1 / -1;
+      background: #ff4db8;
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+      justify-self: center;
+      width: 200px;
+    }
+
+    /* Адаптив для телефонов - 1 колонка */
     @media (max-width: 600px) {
       .grid {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -362,15 +378,31 @@
     const trackList = document.getElementById('trackList');
     let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
 
-    const tracksPerPage = 26;
+    // Возвращает число треков для загрузки в зависимости от ширины экрана
+    function getTracksPerPage() {
+      return window.innerWidth <= 600 ? 10 : 25;
+    }
+
+    let tracksPerPage = getTracksPerPage();
     let currentTrackCount = tracksPerPage;
+
+    window.addEventListener('resize', () => {
+      const newTracksPerPage = getTracksPerPage();
+      if (newTracksPerPage !== tracksPerPage) {
+        tracksPerPage = newTracksPerPage;
+        if (currentTrackCount < tracksPerPage) {
+          currentTrackCount = tracksPerPage;
+          renderTracks();
+        }
+      }
+    });
 
     function renderTracks() {
       trackGrid.innerHTML = '';
       favGrid.innerHTML = '';
       trackList.innerHTML = '';
 
-      for(let i = 0; i < Math.min(currentTrackCount, titles.length); i++) {
+      for (let i = 0; i < Math.min(currentTrackCount, titles.length); i++) {
         const id = i + 1;
         const title = titles[i];
         const track = document.createElement('div');
@@ -395,22 +427,16 @@
 
         if (isFav) {
           const favTrack = track.cloneNode(true);
+          favTrack.querySelector('button').addEventListener('click', favClickHandler);
           favGrid.appendChild(favTrack);
         }
       }
 
-      if(currentTrackCount < titles.length) {
+      // Кнопка Загрузить ещё, если есть что грузить
+      if (currentTrackCount < titles.length) {
         const loadMoreBtn = document.createElement('button');
+        loadMoreBtn.id = 'loadMoreBtn';
         loadMoreBtn.textContent = 'Загрузить ещё';
-        loadMoreBtn.style.display = 'block';
-        loadMoreBtn.style.margin = '20px auto';
-        loadMoreBtn.style.padding = '10px 20px';
-        loadMoreBtn.style.fontSize = '1rem';
-        loadMoreBtn.style.cursor = 'pointer';
-        loadMoreBtn.style.background = '#ff4db8';
-        loadMoreBtn.style.border = 'none';
-        loadMoreBtn.style.borderRadius = '10px';
-        loadMoreBtn.style.color = '#fff';
         loadMoreBtn.addEventListener('click', () => {
           currentTrackCount += tracksPerPage;
           renderTracks();
@@ -418,6 +444,7 @@
         trackGrid.appendChild(loadMoreBtn);
       }
 
+      // Навешиваем обработчики на кнопки избранного
       document.querySelectorAll('.fav-btn').forEach(btn => {
         btn.removeEventListener('click', favClickHandler);
         btn.addEventListener('click', favClickHandler);
@@ -437,6 +464,7 @@
       renderTracks();
     }
 
+    // Автоматическое переключение на следующий трек
     function setupAudioEndEvents() {
       const audios = document.querySelectorAll('#all audio');
       audios.forEach(audio => {
@@ -446,15 +474,14 @@
     }
 
     function onTrackEnded(e) {
-      const currentAudio = e.target;
       const allAudios = Array.from(document.querySelectorAll('#all audio'));
-      const currentIndex = allAudios.indexOf(currentAudio);
+      const currentIndex = allAudios.indexOf(e.target);
       if (currentIndex !== -1 && currentIndex < allAudios.length - 1) {
-        const nextAudio = allAudios[currentIndex + 1];
-        nextAudio.play();
+        allAudios[currentIndex + 1].play();
       }
     }
 
+    // Остановка других аудио при проигрывании
     document.addEventListener('play', e => {
       if (e.target.tagName === 'AUDIO') {
         document.querySelectorAll('audio').forEach(audio => {
