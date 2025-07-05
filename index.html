@@ -156,8 +156,11 @@
   </header>
   <main>
     <section id="all" class="tab-content">
-      <div class="grid" id="trackGrid"></div>
-    </section>
+  <div class="grid" id="trackGrid"></div>
+  <div style="display: flex; justify-content: center; margin-top: 20px;">
+    <button id="loadMoreBtn">Загрузить ещё</button>
+  </div>
+</section>
     <section id="favorites" class="tab-content hidden">
       <div class="grid" id="favGrid"></div>
     </section>
@@ -458,20 +461,43 @@
 
       currentTrackCount = nextCount;
 
-      let loadMoreBtn = document.getElementById('loadMoreBtn');
-      if (currentTrackCount < titles.length) {
-        if (!loadMoreBtn) {
-          loadMoreBtn = document.createElement('button');
-          loadMoreBtn.id = 'loadMoreBtn';
-          loadMoreBtn.textContent = 'Загрузить ещё';
-          loadMoreBtn.addEventListener('click', () => {
-            loadMoreTracks();
-          });
-          trackGrid.appendChild(loadMoreBtn);
-        }
-      } else {
-        if (loadMoreBtn) loadMoreBtn.remove();
-      }
+      const loadMoreBtn = document.getElementById('loadMoreBtn');
+loadMoreBtn.addEventListener('click', loadMoreTracks);
+
+function loadMoreTracks() {
+  const tracksPerPage = window.innerWidth <= 600 ? 10 : 26;
+  const nextCount = Math.min(currentTrackCount + tracksPerPage, titles.length);
+
+  for (let i = currentTrackCount; i < nextCount; i++) {
+    const id = i + 1;
+    const title = titles[i];
+    const track = document.createElement('div');
+    track.className = 'track';
+
+    const isFav = favorites.includes(id);
+
+    track.innerHTML = `
+      <h3>${id}. АПФС/КИШЛАК — ${title}</h3>
+      <audio controls src="music/track${id}.mp3" data-id="${id}"></audio>
+      <a class="download" href="music/track${id}.mp3" download>Скачать</a>
+      <button class="fav-btn ${isFav ? 'active' : ''}" data-id="${id}">
+        ${isFav ? '★ В избранном' : '☆ В избранное'}
+      </button>
+    `;
+
+    trackGrid.appendChild(track);
+  }
+
+  currentTrackCount = nextCount;
+  updateLoadMoreVisibility();
+  setupFavButtons();
+  setupAudioEndEvents();
+}
+
+
+function updateLoadMoreVisibility() {
+  loadMoreBtn.style.display = currentTrackCount < titles.length ? 'block' : 'none';
+}
 
       setupFavButtons();
       setupAudioEndEvents();
